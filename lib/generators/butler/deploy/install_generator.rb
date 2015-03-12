@@ -18,7 +18,7 @@ module Butler
           gem 'capistrano-chruby', '~> 0.1.1'
         end
 
-        run 'bundle'
+        bundle_install
       end
 
       def capify
@@ -67,7 +67,7 @@ module Butler
           gem 'unicorn-rails'
         end
 
-        run 'bundle'
+        bundle_install
       end
 
       def copy_unicorn_config
@@ -75,6 +75,21 @@ module Butler
         template 'unicorn/staging.rb', File.join('config', 'unicorn', 'staging.rb')
       end
 
+      def capistrano_pending
+        gem_group :development do
+          gem 'capistrano-pending', require: false
+        end
+
+        append_to_file 'Capfile', "require 'capistrano-pending'"
+
+        bundle_install
+      end
+
+      private
+
+      def bundle_install
+        run 'bundle'
+      end
     end
   end
 end
