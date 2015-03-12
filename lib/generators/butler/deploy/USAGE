@@ -1,0 +1,3 @@
+Description:
+  Create all files required for a capistrano deployment using unicorn
+  as an application server.

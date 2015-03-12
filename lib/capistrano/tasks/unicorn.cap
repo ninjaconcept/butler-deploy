@@ -1,0 +1,40 @@
+namespace :load do
+  task :defaults do
+    set :chruby_ruby, 'ruby-2.2.0'
+
+    # execute :bundle only uses bundle not bundle exec
+    set :unicorn_binary, 'exec unicorn'
+
+    # set :unicorn_config, "#{current_path}/config/unicorn/#{fetch(:rails_env)}.rb"
+
+    set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
+  end
+end
+
+namespace :deploy do
+  desc "Start unicorn"
+  task :start do
+    on roles(:web) do
+      within current_path do
+        execute :bundle, "#{fetch(:unicorn_binary)} -c #{current_path}/config/unicorn/#{fetch(:rails_env)}.rb -E #{fetch(:rails_env)} -D"
+      end
+    end
+  end
+
+  desc "Stop unicorn"
+  task :stop do
+    on roles(:web) do
+      execute "kill -s QUIT `cat #{fetch(:unicorn_pid)}`"
+    end
+  end
+
+  desc "Restart unicorn"
+  task :restart do
+    on roles(:web) do
+      # tell old master not to accept new requests
+      execute "kill -s USR2 `cat #{fetch(:unicorn_pid)}`"
+    end
+  end
+end
+
+after 'deploy:publishing', 'deploy:restart'
