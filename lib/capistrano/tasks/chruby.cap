@@ -1,0 +1,5 @@
+namespace :load do
+  task :defaults do
+    set :chruby_ruby, 'ruby-2.2.0'
+  end
+end
