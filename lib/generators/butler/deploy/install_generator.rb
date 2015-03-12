@@ -42,6 +42,8 @@ module Butler
         gsub_file 'config/deploy.rb', /# set :deploy_to, '\/var\/www\/my_app_name'/, "set :deploy_to, '/home/deploy/www/#{options['app_name']}'"
 
         uncomment_lines 'config/deploy.rb', /ask :branch/
+        uncomment_lines 'config/deploy.rb', /set :linked_files/
+        uncomment_lines 'config/deploy.rb', /set :linked_dirs/
       end
 
       def production_config
