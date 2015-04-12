@@ -13,7 +13,7 @@ if ENV['MY_RUBY_HOME'] && ENV['MY_RUBY_HOME'].include?('rvm')
 end
 
 # If you're not using Bundler at all, remove lines bellow
-ENV['BUNDLE_GEMFILE'] = File.expand_path('../Gemfile', File.dirname(__FILE__))
+ENV['BUNDLE_GEMFILE'] = File.expand_path('../../Gemfile', File.dirname(__FILE__))
 require 'bundler/setup'
 
 worker_processes 2
